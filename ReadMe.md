@@ -1,3 +1,7 @@
+![Screenshot 2023-08-17 233731](https://github.com/NatnaelMekonnen/test-aug-17-23/assets/56589773/88067756-7d85-49a9-b2ad-c75270012ac1)
+![Uploading Screenshot 2023-08-17 233639.png…]()
+![Uploading Screenshot 2023-08-17 233523.png…]()
+![Uploading Screenshot 2023-08-17 233341.png…]()
 # CRUD Application with Next.js and Nest.js
 
 This is a CRUD (Create, Read, Update, Delete) application built using Next.js and Nest.js. It provides a user management system with a user model.
