@@ -19,17 +19,19 @@ const UserModal: React.FC<UserModalProps> = ({
 }) => {
   return (
     <Modal title="User Details" open={visible} onCancel={onClose} footer={null}>
-      <hr className="my-2 opacity-50"/>
+      <hr className="my-2 opacity-50" />
       {task === "view" ? (
         <div className="flex flex-col gap-2">
           <p>
             <span className="font-semibold">Name:</span> {user?.name || "----"}
           </p>
           <p>
-            <span className="font-semibold">Email:</span> {user?.email || "----"}
+            <span className="font-semibold">Email:</span>{" "}
+            {user?.email || "----"}
           </p>
           <p>
-            <span className="font-semibold">Phone Number:</span> {user?.phoneNumber || "----"}
+            <span className="font-semibold">Phone Number:</span>{" "}
+            {user?.phoneNumber || "----"}
           </p>
         </div>
       ) : (

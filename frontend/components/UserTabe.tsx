@@ -4,8 +4,8 @@ import { User } from "../types";
 interface UserTableProps {
   users: User[];
   onDelete: (id: number) => void;
-  onView: (id: number) => void;
-  onUpdate: (id: number) => void;
+  onView: (user: User) => void;
+  onUpdate: (user: User) => void;
 }
 
 const UserTable: React.FC<UserTableProps> = ({
@@ -35,8 +35,8 @@ const UserTable: React.FC<UserTableProps> = ({
       key: "actions",
       render: (_: any, record: User) => (
         <Space>
-          <a onClick={() => onView(record.id)}>View</a>
-          <a onClick={() => onUpdate(record.id)}>Update</a>
+          <a onClick={() => onView(record)}>View</a>
+          <a onClick={() => onUpdate(record)}>Update</a>
           <a onClick={() => onDelete(record.id)}>Delete</a>
         </Space>
       ),

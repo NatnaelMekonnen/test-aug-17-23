@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Button, Form, Input } from "antd";
 import { CreateUser, User } from "@/types";
@@ -48,16 +49,20 @@ const UserForm: React.FC<{
   initialValues?: Record<string, any> | undefined | null;
   onSubmit?: (user: User | CreateUser) => void;
 }> = ({ initialValues, onSubmit }) => {
+  const [userForm] = Form.useForm();
   const onFinish = (values: any) => {
     if (onSubmit) {
-      onSubmit({
-        id: initialValues?.id,
-        ...values,
-      });
+      onSubmit(values);
     }
   };
+
+  React.useEffect(() => {
+    userForm.setFieldsValue(initialValues);
+  }, [initialValues, userForm]);
+
   return (
     <Form
+      form={userForm}
       name="user-form"
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}

@@ -15,9 +15,7 @@ type Task = "view" | "update" | "create";
 
 const Home: React.FC = () => {
   const { data: users, isLoading } = useFetchUsers();
-  const [selectedUser, setSelectedUser] = useState<User | undefined | null>(
-    null,
-  );
+  const [selectedUser, setSelectedUser] = useState<User>();
   const [userModalVisible, setUserModalVisible] = useState(false);
   const [task, setTask] = useState<Task>("view");
   const deleteUserMutation = useDeleteUser();
@@ -26,6 +24,9 @@ const Home: React.FC = () => {
 
   const handleOpen = (type: Task) => {
     setTask(type);
+    if (type === "create") {
+      setSelectedUser(undefined);
+    }
     setUserModalVisible(true);
   };
 
@@ -34,25 +35,35 @@ const Home: React.FC = () => {
   };
 
   const handleCreateUser = async (user: CreateUser) => {
-    await createUserMutation.mutateAsync(user).then(() => {
-      setUserModalVisible(false);
-    });
+    await createUserMutation
+      .mutateAsync({
+        email: user.email,
+        name: user.name,
+        phoneNumber: user.phoneNumber,
+      })
+      .then(() => {
+        setUserModalVisible(false);
+      });
   };
 
   const handleUpdateUser = async (user: User) => {
     await updateUserMutation.mutateAsync(user).then(() => {
-      setUserModalVisible(false);
+      handleCloseModal();
     });
   };
 
-  const handleViewUser = (id: number) => {
-    const user = users?.find((user) => user.id === id);
+  const handleUpdate = (user: User) => {
+    setSelectedUser(user);
+    handleOpen("update");
+  };
+
+  const handleViewUser = (user: User) => {
     setSelectedUser(user);
     handleOpen("view");
   };
 
   const handleCloseModal = () => {
-    setSelectedUser(null);
+    setSelectedUser(undefined);
     setUserModalVisible(false);
   };
 
@@ -80,16 +91,12 @@ const Home: React.FC = () => {
         <UserTable
           users={users || []}
           onDelete={(id: number) => handleDeleteUser(id)}
-          onView={(id: number) => handleViewUser(id)}
-          onUpdate={(id: number) => {
-            const user = users?.find((user) => user.id === id);
-            setSelectedUser(user);
-            handleOpen("update");
-          }}
+          onView={(user: User) => handleViewUser(user)}
+          onUpdate={(user: User) => handleUpdate(user)}
         />
         <UserModal
           task={task}
-          user={selectedUser}
+          user={task === "create" ? null : selectedUser}
           visible={userModalVisible}
           onClose={handleCloseModal}
           onSubmit={task === "create" ? handleCreateUser : handleUpdateUser}
